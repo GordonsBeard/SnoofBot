@@ -11,7 +11,7 @@ A bot that will handle uploading pictures (downloaded from e621) to a telegram c
     * **BOT_TOKEN**: Create a Telegram bot, get the API key
     * **E621_TOKEN**: Get your e621 token from here: https://e621.net/api_keys
     * **E621_USERNAME**: e621 username
-    * **CHAT_ID: The Telegram chat ID (Use @username_to_id_bot if you don't know the chat ID)
+    * **CHAT_ID**: The Telegram chat ID (Use @username_to_id_bot if you don't know the chat ID)
     * **PICTURES_FOLDER**: Where are the pictures going to be uploaded from
     * **PROCESSED_FOLDER**: Where do you want the pictures to end up after being proccessed.
     * *(OPTIONAL)* **DELETE_PICTURE**: Do you want the picture to be deleted after being uploaded? (Default: False)
