@@ -7,7 +7,8 @@ A bot that will handle uploading pictures (downloaded from e621) to a telegram c
 #### Setup
 
 1. Download `app.py`
-2. Edit `app.py` and fill out the following:
+2. Download ffmpeg binaries (ffprobe and ffmpeg) and place them next to app.py (or in PATH)
+3. Edit `app.py` and fill out the following:
     * **BOT_TOKEN**: Create a Telegram bot, get the API key
     * **E621_TOKEN**: Get your e621 token from here: https://e621.net/api_keys
     * **E621_USERNAME**: e621 username
@@ -16,8 +17,8 @@ A bot that will handle uploading pictures (downloaded from e621) to a telegram c
     * **PROCESSED_FOLDER**: Where do you want the pictures to end up after being proccessed.
     * *(OPTIONAL)* **DELETE_PICTURE**: Do you want the picture to be deleted after being uploaded? (Default: False)
     * *(OPTIONAL)* **RENAME_PICTURE**: Do you want to rename the picture to {artist_name}-{e621_postID}.ext? (Default: True)
-3. Run the script: `python ./app.py`
-4. Download pictures from e621 into the **PICTURES_FOLDER**, the program should automatically scan and upload.
+4. Run the script: `python ./app.py`
+5. Download pictures from e621 into the **PICTURES_FOLDER**, the program should automatically scan and upload.
 
 
 #### Limitations
