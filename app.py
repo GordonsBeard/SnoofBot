@@ -34,7 +34,7 @@ PROCESSED_FOLDER = r""  # where the files are moved after uploaded to Telegram
 
 # Flags (optional)
 DELETE_PICTURE = False  # keep the file after uploading? (defualt yes)
-RENAME_PICTURE = False  # rename picture to (artist_name)-(e621_postID).ext
+RENAME_PICTURE = True  # rename picture to (artist_name)-(e621_postID).ext
 CUSTOM_MESSAGE = ""  # optional message appended to captions (leave empty to disable)
 
 # Max file size (do not modify)
