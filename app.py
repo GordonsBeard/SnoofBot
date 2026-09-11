@@ -3,6 +3,7 @@ SnoofBot - Handles uploading saved pictures to Telegram channel with sources
 
 - Automatically scans folder and uploads image
 - Uses e621 hash to source information and tag post
+- Attempts downscaling large images to Telegram accepted sizes
 - Moves files too large for upload somewhere else
 """
 
@@ -10,6 +11,7 @@ import os
 import requests
 import sys
 import time
+from PIL import Image, ImageOps
 
 # Replace with your bot token
 BOT_TOKEN = ""
@@ -71,6 +73,37 @@ def e621_info(file):
         post_info = None
     return post_info
 
+def resize_image(file_path):
+    """Resize image in-place until under MAX_PHOTO_SIZE."""
+    ext = os.path.splitext(file_path)[1].lower()
+    original_size = os.path.getsize(file_path)
+    print(f"Resizing {file_path} ({original_size / (1024*1024):.1f}MB)")
+    
+    with Image.open(file_path) as img:
+        img = ImageOps.exif_transpose(img)
+        img.load()
+        width, height = img.size
+    
+    for i in range(20):
+        width = int(width * 0.9)
+        height = int(height * 0.9)
+        resized = img.resize((width, height), Image.Resampling.LANCZOS)
+        
+        if ext in ('.jpg', '.jpeg'):
+            resized.save(file_path, format='JPEG', quality=85)
+        elif ext == '.png':
+            resized.save(file_path, format='PNG', optimize=True)
+        elif ext == '.webp':
+            resized.save(file_path, format='WEBP', quality=85)
+        
+        new_size = os.path.getsize(file_path)
+        if new_size < MAX_PHOTO_SIZE and (width + height) <= 10000:
+            print(f"Resized to {width}x{height} ({new_size / (1024*1024):.1f}MB)")
+            return True
+    
+    print(f"Could not resize under 10MB after 20 iterations, this is a BIG boy.")
+    return False
+
 if __name__ == "__main__":
     if not BOT_TOKEN or not CHAT_ID or not E621_TOKEN or not E621_USERNAME:
         print("Make sure to fill out BOT_TOKEN, CHAT_ID, E621_TOKEN, E621_USERNAME, PICTURES_FOLDER, and PROCESSED_FOLDER!")
@@ -83,6 +116,11 @@ if __name__ == "__main__":
             files = [x for x in files if x.endswith(".part") == False]
             for file in files:
                 file_path = os.path.join(root, file)
+                # Check if file is still downloading by comparing size
+                initial_size = os.path.getsize(file_path)
+                time.sleep(0.5)
+                if os.path.getsize(file_path) != initial_size:
+                    continue  # File still being written
                 if "(1)" in file:
                     print("Duplicate file downloaded, deleting.")
                     os.remove(os.path.join(root, file))
@@ -94,8 +132,13 @@ if __name__ == "__main__":
                     print("Not an e621 image, not uploading.")
                     continue
                     
+                ext = file_path.split(".")[-1]
+                
+                if ext in ('jpg', 'jpeg', 'png', 'webp') and os.path.getsize(file_path) > MAX_PHOTO_SIZE:
+                    if not resize_image(file_path):
+                        continue
+
                 try:
-                    ext = file_path.split(".")[-1]
                     file_size = os.path.getsize(file_path)
                     if file_size > MAX_SIZE:
                         new_filename = f"{post_info['artists']}_{post_info['post_id']}.{ext}" if RENAME_PICTURE else file # type: ignore
