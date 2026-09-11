@@ -92,7 +92,7 @@ def resize_image(file_path):
         if ext in ('.jpg', '.jpeg'):
             resized.save(file_path, format='JPEG', quality=85)
         elif ext == '.png':
-            resized.save(file_path, format='PNG', optimize=True)
+            resized.save(file_path, format='PNG')
         elif ext == '.webp':
             resized.save(file_path, format='WEBP', quality=85)
         
