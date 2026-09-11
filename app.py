@@ -83,7 +83,7 @@ def e621_info(file):
     url = f"https://e621.net/posts.json?api_key={E621_TOKEN}&login={E621_USERNAME}&md5={md5}"
     response = requests.get(
         url,
-        headers={"User-Agent": "SnoofBot/1.0 (by {E621_USERNAME} on e621)"},
+        headers={"User-Agent": f"SnoofBot/1.0 (by {E621_USERNAME} on e621)"},
         timeout=10,
     )
     if response.ok:
