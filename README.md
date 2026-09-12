@@ -2,10 +2,11 @@
 _Sniffing for smut, sources, and sharing._
 
 ##### What is this?
-A bot that will handle uploading pictures (downloaded from e621) to a telegram channel of your choice. This will include the artist name as well as a link to the e621 post.
+A bot that will handle uploading pictures (downloaded from e621) to a telegram channel of your choice. This will include the artist name as well as a link to the e621 post. This will also resize videos/images that are too large to attach without compression.
 
 #### Setup
 
+0. Make sure your python enviornment has `requests` and `PIL` installed
 1. Download `app.py`
 2. Download ffmpeg binaries (ffprobe and ffmpeg) and place them next to app.py (or in PATH)
 3. Edit `app.py` and fill out the following:
