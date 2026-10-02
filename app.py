@@ -11,6 +11,7 @@ SnoofBot - Handles uploading saved pictures to Telegram channel with sources
 
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import time
@@ -293,7 +294,7 @@ def compress_video(file_path):
             )
 
             if result.returncode == 0 and os.path.exists(temp_path):
-                os.replace(temp_path, file_path)
+                shutil.move(temp_path, file_path)
                 new_size = os.path.getsize(file_path)
                 if new_size < MAX_SIZE:
                     print(
@@ -338,7 +339,7 @@ def compress_video(file_path):
             )
 
             if result.returncode == 0 and os.path.exists(temp_path):
-                os.replace(temp_path, file_path)
+                shutil.move(temp_path, file_path)
                 new_size = os.path.getsize(file_path)
                 if new_size < MAX_SIZE:
                     print(f"Compressed with scaling ({new_size / (1024*1024):.1f}MB)")
@@ -363,7 +364,7 @@ def move_to_processed(starting_path, file_ext, tags):
     destination_path = os.path.join(PROCESSED_FOLDER, new_filename)
 
     try:
-        os.replace(starting_path, destination_path)
+        shutil.move(starting_path, destination_path)
         print(f"Processed and moved {file_name} photo to {PROCESSED_FOLDER}")
         return True
     except OSError as err:
